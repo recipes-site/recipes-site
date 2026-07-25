@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recipes — сборник лучших рецептов</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Manrope:wght@400;500;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#182619;
+    --bg-card:#213321;
+    --bg-card-hover:#28402a;
+    --line: rgba(243,238,225,0.12);
+    --saffron:#e3a857;
+    --tomato:#c1503f;
+    --sage:#9fb08f;
+    --cream:#f3eee1;
+    --cream-dim: rgba(243,238,225,0.68);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--cream);
+    font-family:'Manrope', sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- header ---------- */
+  header{
+    padding:28px 0 0;
+    position:sticky;
+    top:0;
+    background:linear-gradient(var(--bg) 78%, transparent);
+    z-index:50;
+  }
+  .nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding-bottom:18px;
+    border-bottom:1px solid var(--line);
+  }
+  .logo{
+    font-family:'Unbounded', sans-serif;
+    font-weight:800;
+    font-size:22px;
+    letter-spacing:-0.02em;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .logo .dot{
+    width:9px;height:9px;border-radius:50%;
+    background:var(--tomato);
+    display:inline-block;
+  }
+  .nav-label{
+    font-size:14px;
+    font-weight:700;
+    color:var(--cream-dim);
+    user-select:none;
+    cursor:default;
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding:64px 0 48px;
+    display:grid;
+    grid-template-columns:1.15fr 0.85fr;
+    gap:48px;
+    align-items:center;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--saffron);
+    margin:0 0 14px;
+  }
+  h1.headline{
+    font-family:'Unbounded', sans-serif;
+    font-weight:800;
+    font-size:clamp(34px, 5.4vw, 58px);
+    line-height:1.03;
+    letter-spacing:-0.015em;
+    margin:0 0 20px;
+  }
+  h1.headline em{
+    font-style:normal;
+    color:var(--saffron);
+  }
+  .hero p.lead{
+    font-size:17px;
+    color:var(--cream-dim);
+    max-width:46ch;
+    margin:0 0 26px;
+  }
+  .hero-actions{display:flex;gap:14px;flex-wrap:wrap;}
+  .btn{
+    font-family:'Manrope',sans-serif;
+    font-weight:800;
+    font-size:14.5px;
+    padding:14px 24px;
+    border-radius:999px;
+    border:none;
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    transition:transform .15s ease, background .15s ease;
+  }
+  .btn-primary{background:var(--saffron);color:#1b2a1e;}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn-ghost{background:transparent;border:1px solid var(--line);color:var(--cream);}
+  .btn-ghost:hover{border-color:var(--saffron);color:var(--saffron);}
+  .btn:focus-visible{outline:2px solid var(--saffron);outline-offset:3px;}
+
+  /* stamp / signature element */
+  .stamp-wrap{display:flex;justify-content:center;}
+  .stamp{
+    position:relative;
+    width:230px;height:230px;
+    border-radius:50%;
+    border:2.5px dashed rgba(227,168,87,0.55);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transform:rotate(-7deg);
+    background:radial-gradient(circle at 32% 28%, #2c4229, #182619 72%);
+  }
+  .stamp-inner{
+    text-align:center;
+    font-family:'JetBrains Mono', monospace;
+  }
+  .stamp-inner .num{
+    font-family:'Unbounded',sans-serif;
+    font-size:44px;
+    font-weight:800;
+    color:var(--saffron);
+    line-height:1;
+  }
+  .stamp-inner .label{
+    font-size:11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--sage);
+    margin-top:6px;
+  }
+  .stamp-inner .sub{
+    font-size:12px;
+    color:var(--cream-dim);
+    margin-top:10px;
+    max-width:140px;
+    font-family:'Manrope',sans-serif;
+  }
+
+  /* ---------- filters ---------- */
+  .filters{
+    padding:8px 0 30px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    border-bottom:1px solid var(--line);
+    margin-bottom:40px;
+  }
+  .chip{
+    font-family:'Manrope',sans-serif;
+    font-weight:700;
+    font-size:13.5px;
+    padding:9px 18px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:transparent;
+    color:var(--cream-dim);
+    cursor:pointer;
+    transition:all .15s ease;
+  }
+  .chip:hover{border-color:var(--saffron);color:var(--cream);}
+  .chip.active{background:var(--saffron);border-color:var(--saffron);color:#1b2a1e;}
+  .chip:focus-visible{outline:2px solid var(--saffron);outline-offset:2px;}
+
+  /* ---------- section titles ---------- */
+  .section-title{
+    font-family:'Unbounded',sans-serif;
+    font-size:26px;
+    font-weight:800;
+    margin:0 0 6px;
+    letter-spacing:-0.01em;
+  }
+  .section-sub{
+    color:var(--cream-dim);
+    font-size:14.5px;
+    margin:0 0 28px;
+  }
+
+  /* ---------- recipe grid ---------- */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));
+    gap:20px;
+    padding-bottom:70px;
+  }
+  .card{
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    overflow:hidden;
+    position:relative;
+    transition:background .18s ease, transform .18s ease;
+  }
+  .card:hover{background:var(--bg-card-hover);transform:translateY(-3px);}
+
+  .card-image{
+    height:150px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:56px;
+    position:relative;
+  }
+  .card-image .card-index{
+    position:absolute;
+    top:12px;
+    left:14px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    color:rgba(24,38,25,0.55);
+    font-weight:600;
+  }
+  .card-image .card-tag{
+    position:absolute;
+    top:12px;
+    right:14px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:#1b2a1e;
+    background:rgba(243,238,225,0.72);
+    padding:4px 10px;
+    border-radius:999px;
+    white-space:nowrap;
+  }
+
+  .card-body{padding:18px 22px 8px;}
+
+  .card h3{
+    font-family:'Unbounded',sans-serif;
+    font-size:20px;
+    font-weight:600;
+    margin:0 0 6px;
+    letter-spacing:-0.01em;
+  }
+  .card .teaser{
+    font-size:14px;
+    color:var(--cream-dim);
+    margin:0 0 14px;
+  }
+  .meta-row{
+    display:flex;
+    gap:16px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    color:var(--sage);
+    margin-bottom:14px;
+  }
+  details{border-top:1px solid var(--line);}
+  summary{
+    cursor:pointer;
+    list-style:none;
+    padding:14px 0;
+    font-weight:800;
+    font-size:13.5px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    color:var(--saffron);
+  }
+  summary::-webkit-details-marker{display:none;}
+  summary::after{
+    content:'+';
+    font-size:18px;
+    font-weight:400;
+    transition:transform .2s ease;
+  }
+  details[open] summary::after{transform:rotate(45deg);}
+  .details-body{padding:0 0 20px;font-size:14px;color:var(--cream-dim);}
+  .details-body h4{
+    font-family:'Manrope',sans-serif;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--cream);
+    margin:14px 0 8px;
+  }
+  .details-body ul, .details-body ol{margin:0;padding-left:20px;}
+  .details-body li{margin-bottom:5px;}
+
+  /* ---------- ad / contact section ---------- */
+  .ad-section{
+    padding:56px 0 70px;
+    border-top:1px solid var(--line);
+  }
+  .ad-card{
+    background:radial-gradient(circle at 15% 20%, #2c4229, var(--bg-card) 70%);
+    border:1px solid var(--line);
+    border-radius:22px;
+    padding:44px;
+    display:grid;
+    grid-template-columns:auto 1fr auto;
+    gap:28px;
+    align-items:center;
+  }
+  .seal{
+    width:74px;height:74px;
+    border-radius:50%;
+    background:var(--tomato);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Unbounded',sans-serif;
+    font-weight:800;
+    font-size:22px;
+    color:var(--cream);
+    flex-shrink:0;
+    transform:rotate(-8deg);
+  }
+  .ad-card h3{
+    font-family:'Unbounded',sans-serif;
+    font-size:22px;
+    margin:0 0 8px;
+  }
+  .ad-card p{margin:0;color:var(--cream-dim);font-size:14.5px;}
+  .ad-email{
+    font-family:'JetBrains Mono',monospace;
+    font-weight:600;
+    color:var(--saffron);
+    text-decoration:none;
+    border-bottom:1px solid transparent;
+  }
+  .ad-email:hover, .ad-email:focus-visible{border-bottom-color:var(--saffron);}
+  .ad-cta{
+    font-family:'Manrope',sans-serif;
+    font-weight:800;
+    font-size:14px;
+    padding:14px 22px;
+    border-radius:999px;
+    background:var(--saffron);
+    color:#1b2a1e;
+    text-decoration:none;
+    white-space:nowrap;
+  }
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:26px 0 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:13px;
+    color:var(--sage);
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  footer a{color:var(--saffron);text-decoration:none;}
+  footer a:hover, footer a:focus-visible{text-decoration:underline;}
+
+  @media (max-width:820px){
+    .hero{grid-template-columns:1fr;}
+    .stamp-wrap{order:-1;}
+    .ad-card{grid-template-columns:1fr;text-align:center;}
+    .ad-card .seal{margin:0 auto;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important; scroll-behavior:auto !important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="logo"><span class="dot"></span>Recipes</div>
+    <span class="nav-label">Рецепты</span>
+  </div>
+</header>
+
+<div class="wrap hero">
+  <div>
+    <p class="eyebrow">30 рецептов · проверено на своей кухне</p>
+    <h1 class="headline">Готовь то, что<br>любят <em>все</em>.</h1>
+    <p class="lead">Recipes — сборник самых популярных блюд со всего мира: супы, паста, десерты, завтраки. Понятные шаги, реальные пропорции, никакой воды.</p>
+  </div>
+  <div class="stamp-wrap">
+    <div class="stamp">
+      <div class="stamp-inner">
+        <div class="num">30</div>
+        <div class="label">рецептов</div>
+        <div class="sub">от борща до чизкейка</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="filters" id="filters"></div>
+
+  <section id="catalog">
+    <h2 class="section-title">Каталог рецептов</h2>
+    <p class="section-sub">Нажми на карточку, чтобы раскрыть ингредиенты и шаги приготовления.</p>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section class="ad-section" id="ad">
+    <div class="ad-card">
+      <div class="seal">Ad</div>
+      <div>
+        <h3>По вопросам рекламы</h3>
+        <p>Хотите разместить рекламу или предложить сотрудничество — пишите на почту <span class="ad-email">tasty.recipes.110@gmail.com</span></p>
+      </div>
+      <a class="ad-cta" href="https://mail.google.com/mail/?view=cm&fs=1&to=tasty.recipes.110@gmail.com&su=%D0%A0%D0%B5%D0%BA%D0%BB%D0%B0%D0%BC%D0%B0%20%D0%BD%D0%B0%20Recipes" target="_blank" rel="noopener">Написать нам</a>
+    </div>
+  </section>
+</div>
+
+<footer class="wrap">
+  <span>© Recipes — сборник любимых рецептов</span>
+  <span>Реклама: tasty.recipes.110@gmail.com</span>
+</footer>
+
+<script>
+const RECIPES = [
+  // ---- Завтраки ----
+  {cat:"Завтраки", icon:"🥞", bg:"#e3a857", name:"Блины", time:"30 мин", servings:"4 порции",
+   teaser:"Тонкие, кружевные блины на молоке — классика воскресного утра.",
+   ingredients:["Мука — 2 стакана","Молоко — 500 мл","Яйца — 2 шт","Сахар — 2 ст. л.","Соль — щепотка","Растительное масло — 3 ст. л.","Сода — 0.5 ч. л."],
+   steps:["Взбей яйца с сахаром и солью.","Влей половину молока, всыпь муку с содой, размешай до однородности без комков.","Влей оставшееся молоко и масло, перемешай до состояния жидкой сметаны.","Жарь на раскалённой сковороде по 1 минуте с каждой стороны."]},
+  {cat:"Завтраки", icon:"🍳", bg:"#e0965a", name:"Шакшука", time:"25 мин", servings:"2 порции",
+   teaser:"Яйца, томлёные в пряном томатном соусе с перцем — завтрак с характером.",
+   ingredients:["Яйца — 4 шт","Помидоры — 4 шт (или томаты в с.с. — 400 г)","Болгарский перец — 1 шт","Лук — 1 шт","Чеснок — 2 зубчика","Паприка, зира, соль — по вкусу"],
+   steps:["Обжарь лук, перец и чеснок на оливковом масле 5 минут.","Добавь помидоры и специи, туши 10 минут до густоты соуса.","Сделай ложкой углубления, разбей туда яйца.","Накрой крышкой и готовь 5–7 минут до желаемой готовности желтка."]},
+  {cat:"Завтраки", icon:"🧇", bg:"#eab766", name:"Оладьи", time:"25 мин", servings:"4 порции",
+   teaser:"Пышные дрожжевые оладьи на кефире — воздушные внутри, румяные снаружи.",
+   ingredients:["Кефир — 400 мл","Мука — 300 г","Яйцо — 1 шт","Сахар — 2 ст. л.","Сода — 1 ч. л.","Соль — щепотка"],
+   steps:["Смешай кефир с содой, дай постоять 5 минут до появления пузырьков.","Добавь яйцо, сахар и соль, всыпь муку, замеси густое тесто.","Выкладывай ложкой на разогретую сковороду с маслом.","Жарь по 2 минуты с каждой стороны до золотистой корочки."]},
+  {cat:"Завтраки", icon:"🍞", bg:"#d9a05c", name:"Гренки", time:"15 мин", servings:"2 порции",
+   teaser:"Хрустящие снаружи, нежные внутри гренки со сладкой корочкой.",
+   ingredients:["Батон — 6 ломтиков","Яйца — 2 шт","Молоко — 100 мл","Сахар — 1 ст. л.","Ванилин, корица"],
+   steps:["Взбей яйца с молоком, сахаром и ванилином.","Обмакни ломтики хлеба в смесь с обеих сторон.","Обжарь на сливочном масле до золотистой корочки.","Посыпь корицей и подавай с мёдом или сиропом."]},
+  {cat:"Завтраки", icon:"🧀", bg:"#e8c37a", name:"Творожная запеканка", time:"50 мин", servings:"6 порций",
+   teaser:"Нежная запеканка из творога с манкой — детство в каждой ложке.",
+   ingredients:["Творог — 500 г","Манка — 3 ст. л.","Яйца — 2 шт","Сахар — 80 г","Сметана — 2 ст. л.","Изюм по желанию"],
+   steps:["Смешай творог с яйцами, сахаром и манкой до однородности.","Добавь изюм, выложи массу в форму.","Смажь сметаной сверху.","Выпекай при 180°C 35–40 минут до румяной корочки."]},
+
+  // ---- Супы ----
+  {cat:"Супы", icon:"🍲", bg:"#c1503f", name:"Борщ", time:"1 ч 30 мин", servings:"6 порций",
+   teaser:"Наваристый свекольный борщ с мясом — главное блюдо любого праздничного стола.",
+   ingredients:["Говядина — 500 г","Свёкла — 2 шт","Капуста — 300 г","Картофель — 3 шт","Морковь — 1 шт","Лук — 1 шт","Томатная паста — 2 ст. л.","Чеснок, лавровый лист, уксус"],
+   steps:["Свари бульон из говядины, вынь мясо и нарежь кусочками.","Обжарь свёклу, морковь и лук с томатной пастой и каплей уксуса.","В бульон положи картофель, через 10 минут — капусту.","Добавь обжарку и мясо, вари 15 минут, в конце положи чеснок и лавровый лист."]},
+  {cat:"Супы", icon:"🍜", bg:"#b8462e", name:"Том Ям", time:"40 мин", servings:"4 порции",
+   teaser:"Острый тайский суп с креветками, кокосовым молоком и лемонграссом.",
+   ingredients:["Креветки — 300 г","Кокосовое молоко — 400 мл","Бульон — 500 мл","Лемонграсс — 1 стебель","Паста том-ям — 2 ст. л.","Грибы шиитаке — 150 г","Лайм, кинза, чили"],
+   steps:["Свари бульон с лемонграссом, доведи до кипения.","Добавь пасту том-ям и кокосовое молоко, перемешай.","Положи грибы, вари 5 минут, затем добавь креветки.","Готовь до готовности креветок, в конце добавь сок лайма и кинзу."]},
+  {cat:"Супы", icon:"🎃", bg:"#cf6a3a", name:"Крем-суп из тыквы", time:"35 мин", servings:"4 порции",
+   teaser:"Бархатистый суп-пюре с имбирём и сливками — уютная тарелка осени.",
+   ingredients:["Тыква — 700 г","Сливки — 150 мл","Лук — 1 шт","Чеснок — 2 зубчика","Имбирь — кусочек","Овощной бульон — 500 мл"],
+   steps:["Обжарь лук, чеснок и имбирь до мягкости.","Добавь нарезанную тыкву и бульон, вари 20 минут до мягкости.","Пробей блендером до однородности.","Влей сливки, прогрей и подавай с семечками."]},
+  {cat:"Супы", icon:"🥘", bg:"#a8452f", name:"Харчо", time:"1 ч", servings:"5 порций",
+   teaser:"Острый грузинский суп с говядиной, рисом и грецким орехом.",
+   ingredients:["Говядина — 500 г","Рис — 100 г","Лук — 2 шт","Томатная паста — 2 ст. л.","Грецкие орехи — 50 г","Чеснок, хмели-сунели, кинза"],
+   steps:["Свари бульон из говядины 40 минут.","Добавь обжаренный лук с томатной пастой и рис.","Вари 15 минут до готовности риса.","В конце добавь толчёные орехи, чеснок, специи и зелень."]},
+
+  // ---- Основные блюда ----
+  {cat:"Основные блюда", icon:"🍝", bg:"#d9a05c", name:"Паста Карбонара", time:"25 мин", servings:"2 порции",
+   teaser:"Итальянская классика: спагетти в кремовом соусе из яйца, сыра и гуанчале.",
+   ingredients:["Спагетти — 200 г","Бекон/гуанчале — 150 г","Яичные желтки — 3 шт","Пармезан — 60 г","Чёрный перец — по вкусу"],
+   steps:["Отвари спагетти в подсоленной воде до состояния аль денте.","Обжарь бекон до хрустящей корочки.","Смешай желтки с тёртым пармезаном и перцем.","Сними сковороду с огня, добавь пасту и яичную смесь, быстро перемешай, разбавляя водой от пасты до кремовой текстуры."]},
+  {cat:"Основные блюда", icon:"🍕", bg:"#c1503f", name:"Пицца Маргарита", time:"45 мин", servings:"2 порции",
+   teaser:"Тонкое тесто, томатный соус, моцарелла и базилик — итальянская икона стиля.",
+   ingredients:["Тесто для пиццы — 300 г","Томатный соус — 100 г","Моцарелла — 150 г","Базилик — пучок","Оливковое масло"],
+   steps:["Раскатай тесто в тонкий круг.","Смажь томатным соусом, оставив края.","Выложи нарезанную моцареллу.","Выпекай при 250°C 10–12 минут, перед подачей укрась базиликом."]},
+  {cat:"Основные блюда", icon:"🍔", bg:"#b8462e", name:"Бургер", time:"35 мин", servings:"2 порции",
+   teaser:"Сочная котлета, расплавленный сыр и хрустящая булка — фастфуд-легенда дома.",
+   ingredients:["Говяжий фарш — 300 г","Булочки для бургера — 2 шт","Сыр чеддер — 2 ломтика","Салат, помидор, лук","Соус по вкусу"],
+   steps:["Сформируй из фарша котлеты, посоли и поперчи.","Обжарь котлеты по 3–4 минуты с каждой стороны, за минуту до готовности положи сыр.","Слегка обжарь разрезанные булочки.","Собери бургер: соус, салат, котлета с сыром, помидор, лук."]},
+  {cat:"Основные блюда", icon:"🍚", bg:"#e3a857", name:"Плов", time:"1 ч 10 мин", servings:"6 порций",
+   teaser:"Рассыпчатый рис с мясом, морковью и специями — сытный праздник в одной кастрюле.",
+   ingredients:["Рис — 400 г","Баранина/говядина — 500 г","Морковь — 2 шт","Лук — 1 шт","Чеснок — 1 головка","Зира, барбарис, куркума"],
+   steps:["Обжарь мясо до румяной корочки, добавь лук и морковь соломкой.","Влей воду, добавь специи, туши 40 минут до мягкости мяса.","Промытый рис выложи поверх мяса, не перемешивая, влей воду по уровню.","Воткни в центр головку чеснока, томи под крышкой на медленном огне 30 минут."]},
+  {cat:"Основные блюда", icon:"🌮", bg:"#d9a05c", name:"Тако", time:"30 мин", servings:"4 порции",
+   teaser:"Мексиканские лепёшки с начинкой из мяса, овощей и острого соуса.",
+   ingredients:["Тортильи — 8 шт","Говяжий фарш — 400 г","Специи для тако — 2 ст. л.","Томаты, лук, авокадо","Сыр чеддер, сметана"],
+   steps:["Обжарь фарш со специями до готовности.","Нарежь свежие овощи и авокадо.","Разогрей тортильи на сухой сковороде.","Собери тако: фарш, овощи, сыр и сметана."]},
+  {cat:"Основные блюда", icon:"🍗", bg:"#eab766", name:"Курица Терияки", time:"30 мин", servings:"3 порции",
+   teaser:"Куриное филе в блестящем сладко-солёном соусе — японский стритфуд дома.",
+   ingredients:["Куриное филе — 500 г","Соевый соус — 4 ст. л.","Мёд — 2 ст. л.","Чеснок, имбирь — по вкусу","Кунжут для подачи"],
+   steps:["Нарежь филе кусочками и обжарь до румяности.","Смешай соевый соус, мёд, чеснок и имбирь.","Влей соус к курице, туши 7–10 минут до загустения.","Посыпь кунжутом перед подачей."]},
+  {cat:"Основные блюда", icon:"🌯", bg:"#cf6a3a", name:"Шаурма", time:"25 мин", servings:"3 порции",
+   teaser:"Лаваш с курицей, овощами и соусом — уличная еда номер один.",
+   ingredients:["Лаваш — 3 листа","Куриное филе — 400 г","Огурцы, помидоры, капуста","Чесночный соус","Специи для курицы"],
+   steps:["Обжарь курицу со специями до готовности.","Нарежь овощи соломкой.","Смажь лаваш соусом, выложи начинку.","Заверни рулетом и обжарь на сухой сковороде до румяности."]},
+  {cat:"Основные блюда", icon:"🥩", bg:"#a8452f", name:"Стейк", time:"20 мин", servings:"1 порция",
+   teaser:"Сочный стейк с румяной корочкой — для тех, кто ценит простоту и качество.",
+   ingredients:["Говяжий стейк — 300 г","Оливковое масло","Розмарин, чеснок","Сливочное масло","Соль, перец"],
+   steps:["Достань мясо из холодильника заранее, промокни бумажным полотенцем.","Обжарь на раскалённой сковороде по 2–3 минуты с каждой стороны.","Добавь масло, розмарин и чеснок, поливай стейк соком при жарке.","Дай стейку отдохнуть 5 минут перед подачей."]},
+  {cat:"Основные блюда", icon:"🍝", bg:"#c1503f", name:"Лазанья", time:"1 ч 20 мин", servings:"6 порций",
+   teaser:"Слои теста, мясного рагу и бешамеля, запечённые до золотистой корочки.",
+   ingredients:["Листы для лазаньи — 12 шт","Фарш говяжий — 400 г","Соус бешамель — 500 мл","Томатный соус — 400 мл","Сыр пармезан — 100 г"],
+   steps:["Приготовь мясной соус: обжарь фарш с луком, добавь томатный соус, туши 20 минут.","Собери слои: лист теста, мясной соус, бешамель, повтори.","Верхний слой залей бешамелем и посыпь пармезаном.","Выпекай при 190°C 35–40 минут до румяной корочки."]},
+  {cat:"Основные блюда", icon:"🍝", bg:"#d9a05c", name:"Паста Болоньезе", time:"50 мин", servings:"4 порции",
+   teaser:"Насыщенный мясной соус, томившийся на медленном огне, поверх пасты.",
+   ingredients:["Фарш говяжий — 400 г","Паста тальятелле — 300 г","Томаты в с.с. — 400 г","Морковь, сельдерей, лук","Красное вино — 100 мл (по желанию)"],
+   steps:["Обжарь мелко нарезанные овощи до мягкости.","Добавь фарш, обжарь до румяности.","Влей вино и томаты, туши на медленном огне 30 минут.","Отвари пасту и смешай с соусом перед подачей."]},
+  {cat:"Основные блюда", icon:"🍜", bg:"#b8462e", name:"Рамен", time:"1 ч", servings:"2 порции",
+   teaser:"Наваристый японский суп с лапшой, яйцом и свининой в насыщенном бульоне.",
+   ingredients:["Лапша рамен — 200 г","Свинина — 300 г","Яйца — 2 шт","Соевый соус, мисо-паста","Зелёный лук, водоросли нори"],
+   steps:["Свари насыщенный бульон на свиных костях 40 минут, приправь мисо и соевым соусом.","Отдельно отвари яйца всмятку и лапшу.","Обжарь свинину до румяной корочки.","Собери рамен: бульон, лапша, свинина, половинка яйца, лук и нори."]},
+  {cat:"Основные блюда", icon:"🍗", bg:"#eab766", name:"Котлеты по-киевски", time:"45 мин", servings:"4 порции",
+   teaser:"Хрустящая панировка скрывает сочную начинку из сливочного масла с зеленью.",
+   ingredients:["Куриное филе — 4 шт","Сливочное масло — 100 г","Зелень укропа","Яйца, панировочные сухари, мука"],
+   steps:["Отбей филе, положи внутрь кусочек масла с зеленью, заверни рулетом.","Обваляй в муке, яйце и сухарях, повтори для двойной панировки.","Обжарь до румяной корочки на среднем огне.","Доведи до готовности в духовке при 180°C 10 минут."]},
+
+  // ---- Салаты ----
+  {cat:"Салаты", icon:"🥗", bg:"#8fae6e", name:"Цезарь", time:"20 мин", servings:"2 порции",
+   teaser:"Хрустящий салат с курицей, сухариками и пармезаном под фирменной заправкой.",
+   ingredients:["Куриное филе — 200 г","Салат романо — 1 пучок","Сухарики — 80 г","Пармезан — 40 г","Заправка цезарь"],
+   steps:["Обжарь куриное филе, нарежь полосками.","Нарви салат крупными кусками.","Смешай салат, курицу и сухарики с заправкой.","Посыпь тёртым пармезаном перед подачей."]},
+  {cat:"Салаты", icon:"🫒", bg:"#7a9c5e", name:"Греческий салат", time:"15 мин", servings:"2 порции",
+   teaser:"Свежие овощи, фета и оливки с оливковым маслом — вкус средиземноморского лета.",
+   ingredients:["Огурцы — 2 шт","Помидоры — 3 шт","Фета — 150 г","Оливки — горсть","Красный лук, оливковое масло, орегано"],
+   steps:["Нарежь огурцы и помидоры крупными кубиками.","Добавь тонко нарезанный красный лук и оливки.","Выложи сверху крупный кусок феты.","Полей оливковым маслом, посыпь орегано перед подачей."]},
+  {cat:"Салаты", icon:"🥣", bg:"#9fb08f", name:"Оливье", time:"40 мин", servings:"6 порций",
+   teaser:"Праздничный салат с картофелем, колбасой и майонезом — символ новогоднего стола.",
+   ingredients:["Картофель — 4 шт","Морковь — 2 шт","Яйца — 4 шт","Колбаса варёная — 300 г","Огурцы солёные — 3 шт","Горошек консервированный — 200 г","Майонез"],
+   steps:["Отвари картофель, морковь и яйца, остуди и очисти.","Нарежь картофель, морковь, яйца, колбасу и огурцы одинаковыми кубиками.","Добавь горошек, аккуратно перемешай все ингредиенты.","Заправь майонезом непосредственно перед подачей."]},
+  {cat:"Салаты", icon:"🐟", bg:"#6f9161", name:"Салат с тунцом", time:"15 мин", servings:"2 порции",
+   teaser:"Лёгкий салат с тунцом, яйцом и овощами — быстрый обед без потери вкуса.",
+   ingredients:["Тунец консервированный — 1 банка","Яйца — 2 шт","Листья салата","Помидоры черри — 8 шт","Оливковое масло, лимонный сок"],
+   steps:["Отвари яйца вкрутую, нарежь дольками.","Нарви листья салата, добавь черри пополам.","Выложи тунец кусками поверх овощей.","Заправь оливковым маслом с лимонным соком, добавь яйца."]},
+  {cat:"Салаты", icon:"🫘", bg:"#85a56b", name:"Винегрет", time:"35 мин", servings:"5 порций",
+   teaser:"Яркий свекольный салат с солёными огурцами и квашеной капустой.",
+   ingredients:["Свёкла — 2 шт","Картофель — 3 шт","Морковь — 1 шт","Огурцы солёные — 2 шт","Квашеная капуста — 150 г","Растительное масло"],
+   steps:["Отвари свёклу, картофель и морковь до готовности, остуди.","Нарежь все овощи одинаковыми кубиками.","Добавь нарезанные солёные огурцы и квашеную капусту.","Заправь растительным маслом и перемешай."]},
+
+  // ---- Десерты ----
+  {cat:"Десерты", icon:"🍰", bg:"#e3a857", name:"Тирамису", time:"30 мин + 4 ч охлаждения", servings:"6 порций",
+   teaser:"Слоёный десерт из маскарпоне, кофе и печенья савоярди — итальянская нежность.",
+   ingredients:["Маскарпоне — 500 г","Печенье савоярди — 200 г","Яйца — 4 шт","Сахар — 100 г","Крепкий кофе — 300 мл","Какао для посыпки"],
+   steps:["Взбей желтки с сахаром, добавь маскарпоне до однородности.","Отдельно взбей белки в пену и аккуратно вмешай в крем.","Обмакни печенье в остывший кофе и выложи слоем в форму.","Покрой кремом, повтори слои, охлади 4 часа, посыпь какао."]},
+  {cat:"Десерты", icon:"🥧", bg:"#d9a05c", name:"Яблочный пирог", time:"1 ч", servings:"8 порций",
+   teaser:"Тёплый пирог с корицей и карамелизированными яблоками — уют в каждом кусочке.",
+   ingredients:["Яблоки — 5 шт","Мука — 250 г","Сливочное масло — 150 г","Сахар — 150 г","Яйцо — 1 шт","Корица — 1 ч. л."],
+   steps:["Замеси тесто из муки, масла, сахара и яйца, охлади 20 минут.","Нарежь яблоки дольками, смешай с корицей.","Раскатай тесто, выложи в форму, сверху разложи яблоки.","Выпекай при 180°C 40–45 минут до золотистой корочки."]},
+  {cat:"Десерты", icon:"🍮", bg:"#eab766", name:"Чизкейк", time:"1 ч 30 мин + охлаждение", servings:"8 порций",
+   teaser:"Нежный сливочный чизкейк на песочной основе — десерт для особого случая.",
+   ingredients:["Творожный сыр — 600 г","Печенье песочное — 200 г","Сливочное масло — 80 г","Сахар — 150 г","Яйца — 3 шт","Сметана — 100 г"],
+   steps:["Измельчи печенье, смешай с растопленным маслом, утрамбуй в форму.","Взбей сыр с сахаром, добавь яйца по одному, затем сметану.","Вылей крем на основу, выпекай при 160°C на водяной бане 50–60 минут.","Остуди в духовке с приоткрытой дверцей, затем охлади в холодильнике 4 часа."]},
+  {cat:"Десерты", icon:"🍫", bg:"#c1503f", name:"Брауни", time:"40 мин", servings:"9 порций",
+   teaser:"Плотный шоколадный десерт с влажной серединкой — быстро и безотказно.",
+   ingredients:["Тёмный шоколад — 200 г","Сливочное масло — 150 г","Сахар — 200 г","Яйца — 3 шт","Мука — 100 г","Какао — 2 ст. л."],
+   steps:["Растопи шоколад с маслом на водяной бане.","Взбей яйца с сахаром, соедини с шоколадной массой.","Всыпь муку и какао, аккуратно перемешай.","Выпекай при 180°C 22–25 минут — середина должна остаться слегка влажной."]}
+];
+
+const grid = document.getElementById('grid');
+const filtersEl = document.getElementById('filters');
+const categories = ["Все", ...new Set(RECIPES.map(r => r.cat))];
+let active = "Все";
+
+function renderFilters(){
+  filtersEl.innerHTML = categories.map(c =>
+    `<button class="chip ${c===active?'active':''}" data-cat="${c}">${c}</button>`
+  ).join('');
+  filtersEl.querySelectorAll('.chip').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      active = btn.dataset.cat;
+      renderFilters();
+      renderGrid();
+    });
+  });
+}
+
+function renderGrid(){
+  const list = active === "Все" ? RECIPES : RECIPES.filter(r=>r.cat===active);
+  grid.innerHTML = list.map((r)=>{
+    const globalIndex = RECIPES.indexOf(r) + 1;
+    return `
+    <article class="card">
+      <div class="card-image" style="background:${r.bg}">
+        <span class="card-index">${String(globalIndex).padStart(2,'0')}</span>
+        <span class="card-tag">${r.cat}</span>
+        <span>${r.icon}</span>
+      </div>
+      <div class="card-body">
+        <h3>${r.name}</h3>
+        <p class="teaser">${r.teaser}</p>
+        <div class="meta-row">
+          <span>⏱ ${r.time}</span>
+          <span>🍽 ${r.servings}</span>
+        </div>
+        <details>
+          <summary>Ингредиенты и шаги</summary>
+          <div class="details-body">
+            <h4>Ингредиенты</h4>
+            <ul>${r.ingredients.map(ing=>`<li>${ing}</li>`).join('')}</ul>
+            <h4>Приготовление</h4>
+            <ol>${r.steps.map(s=>`<li>${s}</li>`).join('')}</ol>
+          </div>
+        </details>
+      </div>
+    </article>`;
+  }).join('');
+}
+
+renderFilters();
+renderGrid();
+</script>
+</body>
+</html>
